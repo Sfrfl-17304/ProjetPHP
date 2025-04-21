@@ -8,68 +8,71 @@ class User {
     // Connexion à la base de données
     private static $db;
 
+    public function __construct($username, $password, $role) {
+        $this->username = $username;
+        $this->password = $password;
+        $this->role = $role;
+    }
+
+
     public static function setDb(PDO $db) {
         self::$db = $db;
     }
-
-    public static function createUser(array $data, User $requester): User {
-        if (!$requester->isAdmin()) {
-            throw new Exception("Permission denied");
+    public static function init()
+    {
+        if (!self::$db) {
+            self::$db = Database::getInstance(); // Assuming this returns a PDO object
         }
+    }
 
-        self::validateUserData($data);
+    public static function createUser(string $username, string $password, string $role): bool {
+        self::init();
+        $db = self::$db;
+
+        try {
+            $stmt = $db->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
+            $hashedPassword = MD5($password);
+            return $stmt->execute([$username, $hashedPassword, $role]);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la création de l'utilisateur : " . $e->getMessage());
+        }
+    }
+
+
+    public static function deleteUserById(int $id): bool {
+
 
         $db = self::$db;
+
         try {
-            $db->beginTransaction();
-
-            $stmt = $db->prepare("
-                INSERT INTO users (username, password, role) 
-                VALUES (?, ?, ?)
-            ");
-
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-
-            $stmt->execute([
-                $data['username'],
-                $hashedPassword,
-                $data['role']
-            ]);
-
-            $newUserId = $db->lastInsertId();
-            $db->commit();
-
-            return self::findById($newUserId);
-        } catch(PDOException $e) {
-            $db->rollBack();
-            throw new Exception("Erreur de création : " . $e->getMessage());
+            $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
+            return $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de suppression : " . $e->getMessage());
         }
     }
+
 
     // Méthodes d'authentification
-    public static function authenticate(string $username, string $password): ?User {
-        try {
-            $stmt = self::$db->prepare("SELECT * FROM users WHERE username = ?");
-            $stmt->execute([$username]);
+    public static function authenticate($username, $password) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
 
-            if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                if(password_verify($password, $row['password'])) {
-                    return self::createFromArray($row);
-                }
+        if ($user = $stmt->fetch()) {
+            // Compare directly with md5 hash
+            if ($password === $user['password']) {
+                return self::createFromArray($user);
             }
-            return null;
-        } catch(PDOException $e) {
-            throw new Exception("Erreur d'authentification : " . $e->getMessage());
         }
+        return null;
     }
+
 
     // Factory method
     private static function createFromArray(array $data): User {
-        $user = new self();
+        $user = new self($data['username'], $data['password'], $data['role']);
         $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->password = $data['password'];
-        $user->role = $data['role'];
         return $user;
     }
 

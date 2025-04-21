@@ -6,9 +6,9 @@ class Database {
     private function __construct() {
         try {
             $this->connection = new PDO(
-                "mysql:host=sql7.freesqldatabase.com;dbname=sql7773135;charset=utf8mb4",
-                "sql7773135",
-                "eivngxBAdS",
+                "mysql:host=sql7.freesqldatabase.com;dbname=sql7774461;charset=utf8mb4",
+                "sql7774461",
+                "rqxhprUNxK",
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC

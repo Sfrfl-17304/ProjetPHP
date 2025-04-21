@@ -1,0 +1,158 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.header {
+    background-color: #d32f2f;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    height: 50px;
+}
+
+.slogan {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #ffcccb;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: auto;
+    gap: 20px;
+    padding: 20px;
+    align-items: start;
+}
+
+
+@media (min-width: 768px) {
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr); /* deux colonnes sur tablettes */
+    }
+}
+
+@media (min-width: 1200px) {
+    .dashboard {
+        grid-template-columns: repeat(3, 1fr); /* trois colonnes sur grands écrans */
+    }
+}
+
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #b71c1c;
+}
+
+.full-width {
+    grid-column: 1 / -1; /* makes this section span the whole row */
+}
+
+
+.card button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px 5px 15px 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card button:hover {
+    background-color: #b71c1c;
+}
+
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f8d7da;
+}
+.delete-btn {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    color: #b71c1c;
+}
+.card {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+.card h2 {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+
+.card table th,
+.card table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+
+}
+
+.card table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.card img {
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 0.25rem;
+    object-fit: cover;
+}
+
+.btn-sm-custom {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
