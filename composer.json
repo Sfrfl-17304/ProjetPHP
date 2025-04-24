@@ -1,5 +1,7 @@
 {
   "require": {
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "dompdf/dompdf": "^3.1",
+    "guzzlehttp/guzzle": "^7.9"
   }
 }

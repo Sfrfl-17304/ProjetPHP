@@ -94,7 +94,7 @@ $vendeurs = $pdo->query("SELECT id, username FROM users WHERE role = 'vendeur'")
                 <input type="date" id="sale_date" name="sale_date" class="form-control" value="<?= date('Y-m-d') ?>" required>
             </div>
 
-            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button type="submit" class="btn btn-success" style="width: 20%">Enregistrer</button>
         </form>
     </section>
 
@@ -113,6 +113,7 @@ $vendeurs = $pdo->query("SELECT id, username FROM users WHERE role = 'vendeur'")
                 <th>Date</th>
                 <th>Quantité</th>
                 <th>Action</th>
+                <th>Facture</th>
             </tr>
             </thead>
             <tbody>
@@ -125,10 +126,15 @@ $vendeurs = $pdo->query("SELECT id, username FROM users WHERE role = 'vendeur'")
                     <td><?= htmlspecialchars($row['sale_date']) ?></td>
                     <td><?= htmlspecialchars($row['quantity']) ?></td>
                     <td class="text-center">
+
+
                         <a href="../../public/DeleteSale.php?id=<?= $row['id'] ?>" onclick="return confirm('Supprimer cette vente ?')">
                             <i class="bi bi-trash text-danger"></i>
                         </a>
                     </td>
+                    <td><a style="width: 100%" href="../../public/exportFacture.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" target="_blank">
+                            Facture
+                        </a></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
