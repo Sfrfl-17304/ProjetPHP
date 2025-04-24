@@ -175,6 +175,11 @@ $fournisseurs = $pdo->query("SELECT id, username FROM users WHERE role = 'fourni
                 </tbody>
             </table>
         </div>
+        <div>
+        <a href="dashboardTri.php" class="btn btn-danger">
+            <i class="bi bi-box-seam me-1"></i> Trier par Stock
+        </a></div>
+
     </div>
 
     <hr class="my-5">

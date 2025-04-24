@@ -197,6 +197,8 @@ $produits = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
     </tbody>
 </table>
+    <a href="adminDashboard.php" class="btn btn-danger btn-back mt-3">⬅ Retour au Dashboard</a>
+
 </div>
 
 </body>
