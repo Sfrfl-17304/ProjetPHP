@@ -4,7 +4,7 @@ require_once '../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $_POST['product_id'];
-    $user_id = $_SESSION['user']['id'];
+    $user_id = ($_SESSION['user']['role'] === 'vendeur') ? $_SESSION['user']['id'] : ($_POST['user_id'] ?? null);
     $quantity = (int) $_POST['quantity'];
     $sale_date = $_POST['sale_date'];
     $client_info = trim($_POST['client_info']);

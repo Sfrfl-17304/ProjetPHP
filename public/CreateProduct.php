@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert into database
     try {
+        $redirect = $_SERVER['HTTP_REFERER'] ?? '../app/views/adminDashboard.php';
+        $separator = strpos($redirect, '?') !== false ? '&' : '?';
         $stmt = $pdo->prepare("
             INSERT INTO products (name, description, quantity, price, image, category_id, supplier_id)
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -43,8 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $supplierId
         ]);
 
-        header("Location: ../app/views/AdminDashboard.php");
-        exit;
+        header("Location: {$redirect}{$separator}success=" . urlencode("Produit enregistrée avec succès."));        exit;
 
     } catch (PDOException $e) {
         die("Erreur lors de l'insertion : " . $e->getMessage());

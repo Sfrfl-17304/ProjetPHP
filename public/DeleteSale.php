@@ -33,7 +33,8 @@ try {
     $stmt->execute([$quantity, $product_id]);
 
     $redirect = $_SERVER['HTTP_REFERER'] ?? '../app/views/adminDashboard.php';
-    header("Location: $redirect?success=Vente Supprimée et stock restoré");
+    $separator = strpos($redirect, '?') !== false ? '&' : '?';
+    header("Location: {$redirect}{$separator}success=" . urlencode("Vente Supprimée et stock restauré."));
     exit;
 } catch (PDOException $e) {
     $redirect = $_SERVER['HTTP_REFERER'] ?? '../views/adminDashboard.php';

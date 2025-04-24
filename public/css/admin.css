@@ -13,10 +13,8 @@ body {
 }
 
 .logo {
-    position: absolute;
-    left: 20px;
-    top: 20px;
     height: 50px;
+    margin-bottom: 10px;
 }
 
 .slogan {
@@ -104,6 +102,7 @@ th {
     color: #b71c1c;
 }
 .card {
+    width: 100%;
     margin-bottom: 2rem;
     padding: 1.5rem;
     border-radius: 1rem;
@@ -121,6 +120,9 @@ th {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+}
+table {
+    width: 100%;
 }
 
 .card table {

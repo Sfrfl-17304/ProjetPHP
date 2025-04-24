@@ -122,17 +122,21 @@ class Product {
             throw new Exception("Product update failed: " . $e->getMessage());
         }
     }
-
-    public static function deleteProductById(int $id): bool {
-        self::init();
-
+    public static function deleteProductById($id)
+    {
         try {
             $stmt = self::$db->prepare("DELETE FROM products WHERE id = ?");
             return $stmt->execute([$id]);
         } catch (PDOException $e) {
-            throw new Exception("Product deletion failed: " . $e->getMessage());
+            // Vérifie si c’est une violation de contrainte étrangère
+            if ($e->getCode() === '23000') {
+                throw new Exception("Impossible de supprimer ce produit car il est lié à des ventes.");
+            } else {
+                throw new Exception("Product deletion failed: " . $e->getMessage());
+            }
         }
     }
+
 
     // Getters
     public function getId(): int { return $this->id; }

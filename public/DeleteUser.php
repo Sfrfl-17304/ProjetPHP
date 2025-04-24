@@ -7,7 +7,7 @@ require_once __DIR__ . '/../app/bootstrap.php';
 
 // Vérifie que l'ID est présent et est un nombre
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: ../app/views/AdminDashboard.php?error=" . urlencode("ID utilisateur invalide."));
+    header("Location: ../app/views/userGestion.php?error=" . urlencode("ID utilisateur invalide."));
     exit();
 }
 
@@ -16,11 +16,11 @@ $id = (int)$_GET['id'];
 try {
     $success = User::deleteUserById($id);
     if ($success) {
-        header("Location: ../app/views/AdminDashboard.php?success=" . urlencode("Utilisateur supprimé."));
+        header("Location: ../app/views/userGestion.php?success=" . urlencode("Utilisateur supprimé."));
     } else {
-        header("Location: ../app/views/AdminDashboard.php?error=" . urlencode("Échec de la suppression."));
+        header("Location: ../app/views/user.php?error=" . urlencode("Échec de la suppression."));
     }
 } catch (Exception $e) {
-    header("Location: ../app/views/AdminDashboard.php?error=" . urlencode($e->getMessage()));
+    header("Location: ../app/views/userGestion.php?error=" . urlencode($e->getMessage()));
 }
 exit();

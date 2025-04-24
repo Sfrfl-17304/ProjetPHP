@@ -1,0 +1,53 @@
+<?php
+require_once '../vendor/autoload.php';
+require_once '../app/bootstrap.php';
+
+use Dompdf\Dompdf;
+
+$client = $_GET['client'] ?? null;
+if (!$client) die("Client non défini");
+
+$pdo = Database::getInstance();
+$stmt = $pdo->prepare("
+    SELECT s.*, p.name AS product_name, p.price, u.username AS vendeur
+    FROM sales s
+    JOIN products p ON p.id = s.product_id
+    JOIN users u ON u.id = s.user_id
+    WHERE s.client_info = ?
+");
+$stmt->execute([$client]);
+$ventes = $stmt->fetchAll();
+
+ob_start();
+?>
+
+    <h1 style="text-align:center; color:#d32f2f;"> Facture du client : <?= htmlspecialchars($client) ?></h1>
+
+    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+        <tr>
+            <th>ID</th><th>Produit</th><th>Quantité</th><th>Prix</th><th>Vendeur</th><th>Date</th><th>Total</th>
+        </tr>
+        <?php $total = 0; ?>
+        <?php foreach ($ventes as $v): $ligne = $v['price'] * $v['quantity']; $total += $ligne; ?>
+            <tr>
+                <td><?= $v['id'] ?></td>
+                <td><?= $v['product_name'] ?></td>
+                <td><?= $v['quantity'] ?></td>
+                <td><?= $v['price'] ?></td>
+                <td><?= $v['vendeur'] ?></td>
+                <td><?= $v['sale_date'] ?></td>
+                <td><?= number_format($ligne, 2) ?> MAD</td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <p><strong>Total global : <?= number_format($total, 2) ?> MAD</strong></p>
+
+<?php
+$html = ob_get_clean();
+$dompdf = new Dompdf();
+$dompdf->loadHtml($html);
+$dompdf->setPaper('A4');
+$dompdf->render();
+$dompdf->stream("ventes-client-" . urlencode($client) . ".pdf", ["Attachment" => false]);
+exit;

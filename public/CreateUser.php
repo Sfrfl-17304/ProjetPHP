@@ -18,13 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = User::createUser($username, $password, $role);
 
         if ($result) {
-            header("Location: ../app/views/AdminDashboard.php?success= Utilisateur Crée avec succès");
+            header("Location: ../app/views/userGestion.php?success= Utilisateur Crée avec succès");
         } else {
-            header("Location: ../app/views/AdminDashboard.php?error=" . urlencode("Erreur lors de l'ajout de l'utilisateur."));
+            header("Location: ../app/views/userGestion.php?error=" . urlencode("Erreur lors de l'ajout de l'utilisateur."));
         }
         exit();
     } catch (Exception $e) {
-        header("Location: ../app/views/AdminDashboard.php?error=" . urlencode($e->getMessage()));
+        header("Location: ../app/views/userGestion.php?error=" . urlencode($e->getMessage()));
         exit();
     }
 } else {

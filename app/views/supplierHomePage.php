@@ -26,7 +26,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'fournisseur') {
 $fournisseur_id = $_SESSION['user']['id'];
 
 // Récupérer les produits de ce fournisseur
-$stmt = $pdo->prepare("SELECT * FROM products WHERE supplier_id = :id");
+$stmt = $pdo->prepare("
+    SELECT p.*, c.name AS category_name
+    FROM products p
+    LEFT JOIN categories c ON p.category_id = c.id
+    WHERE p.supplier_id = :id
+");
 $stmt->execute(['id' => $fournisseur_id]);
 $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -74,7 +79,7 @@ $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($prod['description']) ?></td>
                         <td><?= htmlspecialchars($prod['price']) ?> MAD</td>
                         <td><?= htmlspecialchars($prod['quantity']) ?></td>
-                        <td><?= htmlspecialchars($prod['category_id']) ?></td>
+                        <td><?= htmlspecialchars($prod['category_name']) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
